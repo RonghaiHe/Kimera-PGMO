@@ -7,6 +7,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_compile_options(-Wall -Wextra -Wno-sign-compare -Wno-unused-parameter)
 
+find_package(Boost REQUIRED timer)
 find_package(Eigen3 REQUIRED)
 find_package(GTSAM REQUIRED)
 find_package(KimeraRPGO REQUIRED)
