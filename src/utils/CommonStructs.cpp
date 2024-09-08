@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include <numeric>
+#include <chrono>
 
 namespace kimera_pgmo {
 

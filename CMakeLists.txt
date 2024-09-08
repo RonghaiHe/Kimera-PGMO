@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 find_package(catkin_simple REQUIRED)
-
+find_package(Boost REQUIRED timer)
 set(PCL_FIND_QUIETLY TRUE)
 find_package(PCL REQUIRED COMPONENTS
   common
