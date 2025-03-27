@@ -4,10 +4,11 @@
  * the mesh parts of the deformation graph
  * @author Yun Chang
  */
+#include "kimera_pgmo/MeshFrontend.h"
+
 #include <chrono>
 
 #include "kimera_pgmo/KimeraPgmoMesh.h"
-#include "kimera_pgmo/MeshFrontend.h"
 #include "kimera_pgmo/utils/CommonFunctions.h"
 
 namespace kimera_pgmo {
@@ -52,6 +53,8 @@ bool loadFrontendConfigFromROS(const ros::NodeHandle& n, MeshFrontendConfig& con
     }
   }
 
+  n.getParam("frame_id", config.frame_id);
+
   return true;
 }
 
@@ -60,8 +63,8 @@ MeshFrontendPublisher::MeshFrontendPublisher(const ros::NodeHandle& n) {
   full_mesh_pub_ = nl.advertise<kimera_pgmo::KimeraPgmoMesh>("full_mesh", 1, false);
   simplified_mesh_pub_ =
       nl.advertise<mesh_msgs::TriangleMeshStamped>("deformation_graph_mesh", 10, false);
-  mesh_graph_pub_ =
-      nl.advertise<pose_graph_tools_msgs::PoseGraph>("mesh_graph_incremental", 100, true);
+  mesh_graph_pub_ = nl.advertise<pose_graph_tools_msgs::PoseGraph>(
+      "mesh_graph_incremental", 100, true);
 }
 
 void MeshFrontendPublisher::publishOutput(const MeshFrontendInterface& frontend,
@@ -85,7 +88,7 @@ void MeshFrontendPublisher::publishFullMesh(
                                             *frontend.getFullMeshVertices(),
                                             frontend.getFullMeshFaces(),
                                             frontend.getFullMeshTimes(),
-                                            "world",
+                                            frontend.config_.frame_id,
                                             frontend.getFullMeshToGraphMapping());
   // publish
   full_mesh_pub_.publish(mesh_msg);

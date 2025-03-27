@@ -5,10 +5,9 @@
  */
 #pragma once
 
-#include <ros/ros.h>
-
 #include <mesh_msgs/TriangleMeshStamped.h>
 #include <pose_graph_tools_msgs/PoseGraph.h>
+#include <ros/ros.h>
 #include <voxblox_msgs/Mesh.h>
 
 #include "kimera_pgmo/MeshFrontendInterface.h"

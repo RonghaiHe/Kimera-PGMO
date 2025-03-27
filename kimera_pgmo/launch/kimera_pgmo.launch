@@ -1,5 +1,6 @@
 <launch>
   <arg name="dataset" default="uHumans2" />
+  <arg name="robot_name" default="acl_jackal" />
   <arg name="robot_id" default="0" />
   <arg name="run_mode" default="0" /> 
   <arg name="optimized_path_topic" default="optimized_path" />
@@ -11,8 +12,9 @@
   <arg name="track_mesh_graph_mapping" default="true" />
   <arg name="log" default="true" />
   <arg name="enable_sparsify" default="false"/>
+  <arg name="frame_id" default="world" />
 
-  <node name="mesh_frontend" pkg="kimera_pgmo" type="mesh_frontend_node" output="screen" >
+  <node name="mesh_frontend" pkg="kimera_pgmo" type="mesh_frontend_node" output="screen" ns="$(arg robot_name)">
     <param name="horizon" value="$(arg horizon)" />
     <param name="output_mesh_resolution" value="$(arg output_resolution)" />
     <param name="robot_id" value="$(arg robot_id)" />
@@ -25,8 +27,9 @@
     <remap from="~voxblox_mesh" to="kimera_semantics_node/mesh" />
   </node> 
 
-  <node type="kimera_pgmo_node" name="kimera_pgmo" pkg="kimera_pgmo" output="screen" >
+  <node type="kimera_pgmo_node" name="kimera_pgmo" pkg="kimera_pgmo" output="screen" ns="$(arg robot_name)">
     <rosparam file="$(find kimera_pgmo)/params/$(arg dataset)/parameters.yaml" />
+    <param name="frame_id" value="$(arg robot_name)/odom" />
     <param name="output_prefix" value="$(arg output_path)" />
     <param name="robot_id" value="$(arg robot_id)" />
     <param name="run_mode" value="$(arg run_mode)" />
@@ -40,9 +43,9 @@
   </node>
 
   <include file="$(find pose_graph_tools_ros)/launch/posegraph_view.launch" >
-    <arg name="frame_id"      value="world" />
+    <arg name="frame_id"      value="$(arg frame_id)" />
     <arg name="graph_topic"   value="pose_graph" />
-    <arg name="ns"            value="kimera_pgmo"/>
+    <arg name="ns"            value="$(arg robot_name)/kimera_pgmo"/>
   </include>
 
 </launch>

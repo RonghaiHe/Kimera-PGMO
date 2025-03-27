@@ -13,10 +13,12 @@
   <arg name="track_mesh_graph_mapping" default="false" />
   <arg name="log" default="true" />
   <arg name="enable_sparsify" default="false"/>
+  <arg name="frame_id" default="world" />
 
   <group ns="$(arg robot_name)" >
     <node name="mesh_frontend" pkg="kimera_pgmo" type="mesh_frontend_node" output="screen" >
       <param name="horizon" value="$(arg horizon)" />
+      <param name="frame_id" value="$(arg robot_name)/map" />
       <param name="output_mesh_resolution" value="$(arg output_resolution)" />
       <param name="robot_id" value="$(arg robot_id)" />
       <param name="d_graph_resolution" value="$(arg d_graph_resolution)" />
@@ -30,6 +32,7 @@
 
     <node type="kimera_pgmo_node" name="kimera_pgmo" pkg="kimera_pgmo" output="screen" >
       <rosparam file="$(find kimera_pgmo)/params/$(arg dataset)/parameters.yaml" />
+      <param name="frame_id" value="$(arg robot_name)/map" />
       <param name="output_prefix" value="$(arg output_path)" />
       <param name="robot_id" value="$(arg robot_id)" />
       <param name="run_mode" value="$(arg run_mode)" />
@@ -43,7 +46,7 @@
     </node>
 
     <include file="$(find pose_graph_tools_ros)/launch/posegraph_view.launch" >
-      <arg name="frame_id"      value="world" />
+      <arg name="frame_id"      value="$(arg frame_id)" />
       <arg name="graph_topic"   value="pose_graph" />
       <arg name="ns"            value="kimera_pgmo"/>
     </include>

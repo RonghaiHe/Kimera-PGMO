@@ -30,6 +30,7 @@ struct MeshFrontendConfig {
   int graph_compression_method = 1;  // 0 for octree, 1 for voxblox
   double d_graph_resolution = 3.0;
   double mesh_resolution = 0.2;
+  std::string frame_id = "world";
 };
 
 class MeshFrontendInterface {
